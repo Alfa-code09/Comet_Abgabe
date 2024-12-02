@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{hyperref} % Für klickbare Inhaltsverzeichnisse
+\usepackage{bookmark} % Unterstützung für Hyperlinks
+\usepackage[utf8]{inputenc} % Für Umlaute
+\usepackage{graphicx}       % Für Bilder
+\usepackage{float}          % Für Platzierungsoption H
+
+
+\title{Abgabe 1 für Computergestützte Methoden}
+\author{Gruppe (88),
+Anas El Fahsi (4242194),
+Arda Bostanci (4339434),\\
+Felix Norbert Figge (4361841)}
+\date{(2. Dezember 2024)}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Der zentrale Grenzwertsatz}
+Der zentrale Grenzwertsatz (ZGS) ist ein fundamentales Resultat der Wahrscheinlichkeitstheorie, das die Verteilung von Summen unabhängiger, identisch verteilter \textit{(i.i.d.)} Zufallsvariablen (ZV) beschreibt. Er besagt, dass unter bestimmten Voraussetzungen die Summe einer großen Anzahl solcher ZV annähernd normalverteilt ist, unabhängig von der Verteilung der einzelnen ZV. Dies ist besonders nützlich, da die Normalverteilung gut untersucht und mathematisch handhabbar ist.
+
+\subsection{Aussage}
+Sei $X_1, X_2, \dots, X_n$ eine Folge von i.i.d. ZV mit dem Erwartungswert $\mu = \mathbb{E}(X_i)$ und der Varianz $\sigma^2 = \text{Var}(X_i)$, wobei $0 < \sigma^2 < \infty$ gelte. Dann konvergiert die standardisierte Summe $Z_n$ dieser ZV für $n \to \infty$ in Verteilung gegen eine Standardnormalverteilung:\textsuperscript{\ref{note1}}
+\[
+Z_n = \frac{\sum_{i=1}^n X_i - n\mu}{\sigma \sqrt{n}} \xrightarrow{d} \mathcal{N}(0, 1). \tag{1}\label{Formel1}
+\]
+Das bedeutet, dass für große $n$ die Summe der ZV näherungsweise normalverteilt ist mit Erwartungswert $n\mu$ und Varianz $n\sigma^2$:
+\[
+\sum_{i=1}^n X_i \sim \mathcal{N}(n\mu, n\sigma^2). \tag{2}\label{Formel2}
+\]
+
+\subsection{Erklärung der Standardisierung}
+Um die Summe der ZV in eine Standardnormalverteilung zu transformieren, subtrahiert man den Erwartungswert $n\mu$ und teilt durch die Standardabweichung $\sigma\sqrt{n}$. Dies führt zu der obigen Formel (\ref{Formel1}). Die Darstellung (\ref{Formel2}) ist für $n \to \infty$ nicht wohldefiniert.
+
+\subsection{Anwendungen}
+Der ZGS wird in vielen Bereichen der Statistik und der Wahrscheinlichkeitstheorie angewendet. Typische Beispiele sind:
+\begin{itemize}
+    \item Berechnung von Konfidenzintervallen\textsuperscript{\ref{note2}}
+    % Arda macht noch Quellen rein
+    \item Durchführung von Hypothesentests\textsuperscript{\ref{note3}} 
+\end{itemize}
+
+\footnotetext[1]{\label{note1}Der zentrale Grenzwertsatz hat verschiedene Verallgemeinerungen. Eine davon ist der Lindeberg-Feller-Zentrale-Grenzwertsatz~[\cite{klenke}, Seite 328], der schwächere Bedingungen an die Unabhängigkeit und die identische Verteilung der ZV stellt.}
+
+\footnotetext[2]{\label{note2}Bei der Schätzung der Grenzen wird eine Transformation in die Standardnormalverteilung mithilfe des zentralen Grenzwertsatzes durchgeführt~[\cite{bortz}, Kapitel 3.5, S. 101-102].}
+
+\footnotetext[3]{\label{note3}Zur Bestimmung der Irrtumswahrscheinlichkeit werden viele Stichproben gezogen, bis eine Normalverteilung nach dem zentralen Grenzwertsatz vorliegt~[\cite{bortz}, Kapitel 4, S. 112].}
+
+
+\newpage
+
+\section{Bearbeitung zur Aufgabe 1}
+In dieser Aufgabe berechnen wir die höchste mittlere Temperatur eines Datensatzes, zuerst mit einer Tabellenkalkulation und dann mittels eines SQL-Datenbankschemas. Abschließend ermitteln wir die durchschnittliche Höchsttemperatur mit einer passenden SQL-Abfrage.
+
+
+\subsection{Berechnung per Tabellenkalkulation}
+
+Wir haben den Datensatz in Excel importiert, nach Gruppennummer 88 gefiltert und leere Zellen in der Spalte \textit{average\_temperature} ausgeschlossen. Mit der Funktion MAX(...) haben wir die höchste mittlere Temperatur ermittelt~\ref{fig:Excel}.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Screenshots/Excel Umsetzung.png}
+    \caption{Die höchste mittlere Temperatur wurde mit MAX(...) für die Spalte L (Zeilen 2 bis 363) berechnet.}
+    \label{fig:Excel}
+\end{figure}
+
+\noindent{Das Ergebnis sind $83^\circ\,\mathrm{F}$. Die Einheit ist Fahrenheit, da dem Datensatz zu entnehmen ist, dass die Temperaturen in einer Straße in New York gemessen wurden. Um die Temperatur in Grad Celsius zu berechnen nehmen wir uns folgende Formel zur Hilfe:}
+
+\begin{equation}
+^\circ\,\mathrm{C} = \frac{5}{9} (^\circ\,\mathrm{F}-32). \tag{3}
+\end{equation}\;
+
+
+\noindent{Setzt man $83^\circ\,\mathrm{F}$ in die Formel ein erhält man als Ergebnis $28,3^\circ\,\mathrm{C}$.}\textsuperscript{\ref{note4}}
+
+\footnotetext[4]{\label{note4}Zur Umrechnung von Grad Fahrenheit zu Grad Celsius wurde die oben stehende Formel aus dem Buch von Tipler herangezogen~[\cite{tipler}, Kapitel 13.2, Seite 491, Formel 13.2.]}
+
+\subsection{Berechnung mit SQL}
+
+Zuallererst haben wir die Zeilen entfernt, bei denen in der Spalte \textit{average\_temperature} kein Wert vorhanden war, um die spätere Abfrage in SQL zu erleichtern. Basierend auf den Prinzipien der Datenbanknormalisierung haben wir folgendes Schema erstellt:
+
+\newpage
+
+\begin{enumerate}
+    \item Eine dates-Tabelle mit einer id-Spalte als Primärschlüssel und den Spalten für Datum und Station.
+    \item Eine measurements-Tabelle, die alle Messungen (z. B. Temperaturen, Niederschläge) speichert und über einen Fremdschlüssel (die id) mit der dates-Tabelle verknüpft ist.
+\end{enumerate}
+
+\noindent So schaffen wir es, Redundanzen zu minimieren und sicherzustellen, dass beide Tabellen die 1. und 2. Normalform erfüllen. Wir haben also die beiden CSV-Dateien mit den richtigen Spalten erstellt, die Tabellen in SQL definiert und die Daten mithilfe der SQL-Befehle aus dem Skript in die jeweiligen Tabellen importiert ~\ref{fig:Umsetzung SQL}.\textsuperscript{\ref{note5}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Screenshots/SQL Umsetung.jpg}
+    \caption{Hier haben wir in Sqlite3 auf Mac mit den DDL Befehlen die beiden Tabellen erstellt und die jeweiligen CSV-Dateien in die Tabellen importiert.\textsuperscript{\ref{note6}}}
+    \label{fig:Umsetzung SQL}
+\end{figure}
+
+\noindent Dann haben wir mithilfe der Abfrage nach der höchsten mittleren Temperatur den Wert 83 erhalten ~\ref{fig:Abfrage}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Screenshots/Abfrage höchste mittlere Temperatur.png}
+    \caption{Abfrage nach der höchsten mittleren Temperature aus der measurements Tabelle.}
+    \label{fig:Abfrage}
+
+\end{figure}
+
+\noindent {Wie bei der Berechnung mit Excel festgestellt, liegen die Temperaturen in Fahrenheit vor. Der Wert 83 entspricht dem Ergebnis der Excel-Abfrage, womit wir erneut eine Temperatur von $28,3^\circ\,\mathrm{C}$ erhalten.}
+
+
+
+\section{Github}
+\noindent Wir haben unser Overleaf Dokument auf Github als ZIP-Datei und nochmal die einzelnen Dateien hochgeladen.
+\href{https://github.com/Alfa-code09/Comet_Abgabe.git}{Klicken Sie auf diesen Text um den zu öffnen.}
+
+
+
+\footnotetext[5]{\label{note5}Das Datenbankschema wurde nach der 1. und 2. Normalform erstellt, wobei alle Attribute atomar sind und die Tabellen mit Fremdschlüsseln verknüpft wurden. ~[\cite{TeßmerNoData}, S. 8.]}
+
+\footnotetext[6]{\label{note6}Die DDL Befehle haben wir aus dem Skript 
+~[\cite{TeßmerNoData}, unter dem Punkt „Schritt 1: Übersetzung in SQL“, S. 11.]}
+
+\newpage
+\bibliographystyle{unsrt} % vorher stand hier \bibliographystyle{plain},haben es aber geändert, damit der Abschnitt "Literatur" nicht nach dem Alphabet der Autoren sortiert wird, sondern dass die Literatur nach Zitierung im Dokument sortiert wird, weil sonst [2] vor [1] stehen würde
+\bibliography{references}
+
+\end{document}
